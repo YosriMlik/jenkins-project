@@ -19,7 +19,7 @@ public class HelloController {
 	public String sayHello() {
 		return "hello from controller";
 	}
-	@GetMapping("/hiiiii")
+	@GetMapping("/hii")
 	public String sayHello11() {
 		return "hello from controller";
 	}
