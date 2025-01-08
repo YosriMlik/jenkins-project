@@ -47,20 +47,20 @@ pipeline {
             }
         }
 
-        stage ('Deploy') {
-            steps {
-                echo 'Deploying Docker container to VM2...'
-                sshagent(credentials: ['vm2-ssh']) { // Use the ID of the SSH credentials
-                    sh """
-                        # Pull the Docker image on VM2
-                        ssh ubuntu-server@192.168.11.131 "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}"
-
-                        # Run the Docker container on VM2
-                        ssh ubuntu-server@192.168.11.131 "sudo docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    """
-                }
-            }
+stage ('Deploying to VM2') {
+    steps {
+        echo 'Deploying Docker container to VM2...'
+        withCredentials([sshUserPrivateKey(
+            credentialsId: 'vm2-ssh', // Use the ID of the SSH credentials
+            keyFileVariable: 'SSH_KEY'
+        )]) {
+            sh """
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.131 "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.131 "sudo docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+            """
         }
+    }
+}
     }
 
     post {
