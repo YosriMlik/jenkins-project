@@ -3,33 +3,33 @@ pipeline {
 
     tools {
         jdk 'JDK'
-        maven 'Maven 3.9.9' // Ensure JDK8 is configured in Jenkins (Manage Jenkins > Global Tool Configuration)
+        maven 'Maven 3.9.9'
     }
 
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Set Java home directory
-        DOCKER_TAG = getVersion() // Generate Docker tag using Git commit hash
-        //DOCKER_IMAGE = 'jmlhmd/image_name' // Replace with your Docker Hub username and image name
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+        DOCKER_TAG = getVersion()
+        DOCKER_IMAGE = 'yosrimlik/image_name' // Replace with your Docker Hub username and image name
     }
 
     stages {
         stage ('Clone Stage') {
             steps {
-                git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git' // Replace with your repo URL
+                git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git'
             }
         }
 
         stage ('Build Maven Project') {
             steps {
                 echo 'Building Maven project...'
-                sh 'mvn clean package' // Build the Maven project
+                sh 'mvn clean package'
             }
         }
 
         stage ('Docker Build') {
             steps {
                 echo 'Building Docker image...'
-                sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ." // Build Docker image
+                sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
             }
         }
 
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo 'Pushing Docker image to Docker Hub...'
                 withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-credentials', // Add Docker Hub credentials in Jenkins
+                    credentialsId: 'docker-hub-credentials', // Use the ID of the credentials you added
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
@@ -50,10 +50,10 @@ pipeline {
         stage ('Deploy') {
             steps {
                 echo 'Deploying Docker container to remote server...'
-                sshagent(credentials: ['Vagrant_ssh']) { // Add SSH credentials in Jenkins
+                sshagent(credentials: ['Vagrant_ssh']) {
                     sh """
-                        ssh user@Ip_Recette 'sudo docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}' // Pull Docker image on remote server
-                        ssh user@Ip_Recette 'sudo docker run -d -p 8080:8080 ${DOCKER_IMAGE}:${DOCKER_TAG}' // Run Docker container
+                        ssh user@Ip_Recette 'sudo docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}'
+                        ssh user@Ip_Recette 'sudo docker run -d -p 8080:8080 ${DOCKER_IMAGE}:${DOCKER_TAG}'
                     """
                 }
             }
@@ -72,6 +72,6 @@ pipeline {
 
 // Custom function to generate Docker tag
 def getVersion() {
-    def version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim() // Get Git commit hash
+    def version = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     return version
 }
