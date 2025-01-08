@@ -50,6 +50,7 @@ pipeline {
         stage ('Deploy') {
             steps {
                 echo 'Deploying Docker container...'
+                echo 'docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}'
                 sh """
                     docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} // Pull Docker image
                     docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG} // Run Docker container
