@@ -3,7 +3,7 @@
 
 This is a Maven-based Java application project.
 
-## Prerequisites
+## Prerequisitess
 
 - Java 8 or higher
 - Maven 3.6.x or higher
