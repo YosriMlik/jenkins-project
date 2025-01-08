@@ -18,25 +18,22 @@ pipeline {
         }
         stage ('Compile Stage') {
             steps {
-                withMaven(maven : 'Maven 3.9.9') {
-                    bat 'mvn clean compile'
-                }
+                echo 'mvn clean compile'
+                sh 'mvn clean compile'
             }
         }
         
         stage ('Testing Stage') {
             steps {
-                withMaven(maven : 'Maven 3.9.9') {
-                    bat 'mvn test'
-                } 
+                echo 'mvn test'
+                sh 'mvn test'
             }
         }
         
         stage ('Install Stage') {
             steps {
-                withMaven(maven : 'Maven 3.9.9') {
-                    bat 'mvn install'
-                } 
+                echo 'mvn install'
+                sh 'mvn install'
             } 
         }
     }
