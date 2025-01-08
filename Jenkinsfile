@@ -49,12 +49,12 @@ pipeline {
 
         stage ('Deploy') {
             steps {
-                echo 'Deploying Docker container...'
-                echo 'docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}'
-                sh """
-                    docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} // Pull Docker image
-                    docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG} // Run Docker container
-                """
+                echo 'Deploying Docker container to VM2...'
+                sshagent(credentials: ['vm2-ssh']) { // Use the ID of the SSH credentials
+                    sh """
+                        ssh ubuntu-server@192.168.11.131 "sudo docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    """
+                }
             }
         }
     }
