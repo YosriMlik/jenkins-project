@@ -52,7 +52,7 @@ pipeline {
                 echo 'Deploying Docker container...'
                 sh """
                     docker pull ${DOCKER_IMAGE}:${DOCKER_TAG} // Pull Docker image
-                    docker run -d -p 8080:8080 ${DOCKER_IMAGE}:${DOCKER_TAG} // Run Docker container
+                    docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG} // Run Docker container
                 """
             }
         }
