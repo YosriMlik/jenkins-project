@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK' // Ensure JDK8 is configured in Jenkins (Manage Jenkins > Global Tool Configuration)
+        jdk 'JDK'
+        maven 'Maven 3.9.9' // Ensure JDK8 is configured in Jenkins (Manage Jenkins > Global Tool Configuration)
     }
 
     environment {
