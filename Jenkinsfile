@@ -55,8 +55,8 @@ stage ('Deploying to VM2') {
             keyFileVariable: 'SSH_KEY'
         )]) {
             sh """
-                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.131 "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.131 "sudo docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "sudo docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
             """
         }
     }
