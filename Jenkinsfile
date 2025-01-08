@@ -2,25 +2,23 @@ pipeline {
     agent any
     
     tools{ 
-        jdk 'JDK19' 
-       
-
+        jdk 'JDK' 
     }
     
-    environment { 
+    /*environment { 
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-19'
         M2 = 'D:\\apache-maven-3.9.9\\bin'
-    }
+    }*/
     
     stages {
-      stage ('clone repo') {
+      stage ('Clone repo') {
             steps {
-               git branch: 'main', url: 'https://github.com/abdellahdhahri/jenkinsProject.git'
+               git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git'
             }
         }
         stage ('Compile Stage') {
             steps {
-                withMaven(maven : 'apache-maven-3.9.9') {
+                withMaven(maven : 'Maven-3.9.9') {
                     bat 'mvn clean compile'
                 }
             }
@@ -28,7 +26,7 @@ pipeline {
         
         stage ('Testing Stage') {
             steps {
-                withMaven(maven : 'apache-maven-3.9.9') {
+                withMaven(maven : 'Maven-3.9.9') {
                     bat 'mvn test'
                 } 
             }
@@ -36,7 +34,7 @@ pipeline {
         
         stage ('Install Stage') {
             steps {
-                withMaven(maven : 'apache-maven-3.9.9') {
+                withMaven(maven : 'Maven-3.9.9') {
                     bat 'mvn install'
                 } 
             } 
