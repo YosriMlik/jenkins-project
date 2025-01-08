@@ -5,7 +5,7 @@ This is a Maven-based Java application project.
 
 ## Prerequisites
 
-- Java 11 or higher
+- Java 18 or higher
 - Maven 3.6.x or higher
 - Your favorite IDE (Eclipse, IntelliJ IDEA, VS Code, etc.)
 
