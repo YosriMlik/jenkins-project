@@ -2,7 +2,8 @@ pipeline {
     agent any
     
     tools{ 
-        jdk 'JDK' 
+        jdk 'JDK',
+        maven 'Maven 3.9.9',
     }
     
     /*environment { 
@@ -11,14 +12,14 @@ pipeline {
     }*/
     
     stages {
-      stage ('Clone repo') {
+      stage ('Clone Repo') {
             steps {
                git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git'
             }
         }
         stage ('Compile Stage') {
             steps {
-                withMaven(maven : 'Maven-3.9.9') {
+                withMaven(maven : 'Maven 3.9.9') {
                     bat 'mvn clean compile'
                 }
             }
@@ -26,7 +27,7 @@ pipeline {
         
         stage ('Testing Stage') {
             steps {
-                withMaven(maven : 'Maven-3.9.9') {
+                withMaven(maven : 'Maven 3.9.9') {
                     bat 'mvn test'
                 } 
             }
@@ -34,7 +35,7 @@ pipeline {
         
         stage ('Install Stage') {
             steps {
-                withMaven(maven : 'Maven-3.9.9') {
+                withMaven(maven : 'Maven 3.9.9') {
                     bat 'mvn install'
                 } 
             } 
