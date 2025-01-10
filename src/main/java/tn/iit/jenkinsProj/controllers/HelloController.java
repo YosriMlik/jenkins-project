@@ -17,7 +17,7 @@ public class HelloController {
 	
 	@GetMapping("/hi")
 	public String sayHello() {
-		return "hello from controller 1234567";
+		return "hello from controller 12345678";
 	}
 	@GetMapping("/hii")
 	public String sayHello11() {
