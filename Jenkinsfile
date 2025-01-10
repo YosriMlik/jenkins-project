@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage ('Clone Stage') {
             steps {
-                git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git'
+                git branch: 'main', url: 'https://github.com/YosriMlik/jenkins-project.git' 
             }
         }
 
@@ -55,7 +55,14 @@ pipeline {
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh """
+                        # Stop and remove any running containers with the same image
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker ps -q --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG} | xargs -r docker stop"
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker ps -a -q --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG} | xargs -r docker rm"
+
+                        # Pull the latest image
                         ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}"
+
+                        # Run the new container
                         ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker run -d -p 8081:8081 ${DOCKER_IMAGE}:${DOCKER_TAG}"
                     """
                 }
