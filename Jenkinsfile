@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-        DOCKER_TAG = getVersion()
+        DOCKER_TAG = "latest"
         DOCKER_IMAGE = 'yosrimlik/image_name' // Replace with your Docker Hub username and image name
     }
 
