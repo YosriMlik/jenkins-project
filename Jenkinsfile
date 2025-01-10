@@ -26,6 +26,24 @@ pipeline {
             }
         }
 
+        stage ('Cleanup Old Containers') {
+            steps {
+                echo 'Cleaning up old Docker containers...'
+                withCredentials([sshUserPrivateKey(
+                    credentialsId: 'vm2-ssh', // Use the ID of the SSH credentials
+                    keyFileVariable: 'SSH_KEY'
+                )]) {
+                    sh """
+                        # Stop running containers with the same image name
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker ps -q --filter 'name=${DOCKER_IMAGE}' | xargs -r docker stop"
+
+                        # Remove all containers (running or stopped) with the same image name
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker ps -a -q --filter 'name=${DOCKER_IMAGE}' | xargs -r docker rm"
+                    """
+                }
+            }
+        }
+
         stage ('Docker Build') {
             steps {
                 echo 'Building Docker image...'
