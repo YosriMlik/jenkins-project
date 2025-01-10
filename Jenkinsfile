@@ -35,8 +35,8 @@ pipeline {
                 )]) {
                     sh """
                         # Stop running containers with the same image name
-                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker stop $(docker ps -q --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG})"
-                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker rm $(docker ps -aq --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG})"
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker stop \$(docker ps -q --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG})"
+                        ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker rm \$(docker ps -aq --filter ancestor=${DOCKER_IMAGE}:${DOCKER_TAG})"
 
                         # Remove all containers (running or stopped) with the same image name
                         ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ubuntu-server@192.168.11.132 "docker rmi -f ${DOCKER_IMAGE}:${DOCKER_TAG}"
@@ -44,6 +44,7 @@ pipeline {
                 }
             }
         }
+
 
         stage ('Docker Build') {
             steps {
