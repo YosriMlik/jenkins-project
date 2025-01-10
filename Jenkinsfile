@@ -51,7 +51,7 @@ pipeline {
             steps {
                 echo 'Deploying Docker container to VM2...'
                 withCredentials([sshUserPrivateKey(
-                    credentialsId: 'vm2-ssh', // Use the ID of the SSH credentials
+                    credentialsId: 'vm2-ssh', // Use the ID of the SSH credentials -
                     keyFileVariable: 'SSH_KEY'
                 )]) {
                     sh """
